@@ -91,7 +91,14 @@ function extractRoutes(appJsxPath) {
 }
 
 function findReactFiles(dir) {
-	return fs.readdirSync(dir).map(item => path.join(dir, item));
+	// Recorre subcarpetas (p.ej. pages/proposals) y devuelve SOLO archivos
+	// fuente React. Antes devolvía también los directorios y readFileSync
+	// lanzaba EISDIR ("Error al procesar …/pages/proposals") durante el build.
+	return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+		const full = path.join(dir, entry.name);
+		if (entry.isDirectory()) return findReactFiles(full);
+		return /\.(jsx?|tsx?)$/.test(entry.name) ? [full] : [];
+	});
 }
 
 function extractHelmetData(content, filePath, routes) {
