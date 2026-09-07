@@ -20,6 +20,8 @@ jobs:
     env:
       # Repo de proyecto → el sitio se sirve bajo /<repo>/ en Pages.
       PAGES_BASE: /ajj-vip-miami/
+      # La raíz de este despliegue muestra directamente la propuesta (enlace corto).
+      VITE_HOME_IS_PROPOSAL: "1"
     steps:
       - uses: actions/checkout@v4
 
