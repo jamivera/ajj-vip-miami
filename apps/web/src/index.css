@@ -1,0 +1,428 @@
+/* Inter se carga desde <head> en index.html (preconnect + preload) para no
+   bloquear el render. No re-importar aquí. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * ATLAS design system (source of truth: Atlas Digital — dark, glassmorphic,
+ * indigo). Ported into the site's Tailwind v3 `hsl(var(--token))` pipeline.
+ *
+ *   ATLAS ink        #07070F  -> hsl(240 36% 4%)
+ *   ATLAS primary    #6560F0  -> hsl(242 83% 66%)  (indigo)
+ *   ATLAS primary lt #8B87FF  -> hsl(242 100% 76%)
+ *   ATLAS radius     10px (--r) / 18px (--r2)
+ *
+ * The site is dark by default (ATLAS is a dark theme). Green is intentionally
+ * omitted — indigo is the single accent.
+ */
+@layer base {
+  :root {
+    --background: 240 36% 4%;
+    --foreground: 0 0% 100%;
+    --card: 240 37% 7%;
+    --card-foreground: 0 0% 100%;
+    --popover: 240 37% 7%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 242 83% 66%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 25% 12%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 240 25% 12%;
+    --muted-foreground: 240 8% 64%;
+    --accent: 240 25% 14%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 18% 15%;
+    --input: 240 18% 17%;
+    --ring: 242 83% 66%;
+    --radius: 0.625rem; /* 10px — ATLAS --r */
+
+    /* ATLAS indigo accent */
+    --brand: 242 83% 66%;
+    --brand-foreground: 0 0% 100%;
+    --brand-light: 242 100% 76%;
+    --brand-dark: 242 65% 56%;
+
+    /* Sidebar tokens referenced by tailwind.config.js */
+    --sidebar-background: 240 33% 3%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 242 83% 66%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 25% 14%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 240 18% 15%;
+    --sidebar-ring: 242 83% 66%;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  background: hsl(var(--background));
+}
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  overflow-x: clip;
+  color: hsl(var(--foreground));
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Ambient ATLAS glow — fixed indigo radial washes behind the page content */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(720px 520px at 12% -5%, hsl(var(--brand) / 0.16), transparent 70%),
+    radial-gradient(760px 560px at 100% 8%, hsl(var(--brand) / 0.09), transparent 72%),
+    radial-gradient(900px 700px at 50% 112%, hsl(var(--brand) / 0.07), transparent 70%);
+}
+
+/* ATLAS type hierarchy — Inter, heavy display weights, tight tracking */
+h1, h2, h3, .display {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.028em;
+  line-height: 1.1;
+}
+h1, .display-xl { letter-spacing: -0.032em; }
+
+/* ATLAS eyebrow / technical label (replaces the old monospace treatment) */
+.mono {
+  font-family: 'Inter', sans-serif;
+  font-feature-settings: 'tnum' 1;
+}
+
+.brand { color: hsl(var(--brand)); }
+.text-brand-light { color: hsl(var(--brand-light)); }
+
+/* ═══════ ATLAS BUTTONS ═══════ */
+.btn-atlas {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background 200ms var(--ease, cubic-bezier(.25,.46,.45,.94)),
+              transform 200ms cubic-bezier(.16,1,.30,1),
+              box-shadow 200ms ease, color 200ms ease, border-color 200ms ease;
+}
+.btn-atlas:active { transform: scale(0.96); }
+
+/* Primary — indigo gradient with shimmer sweep + lift */
+.btn-primary-atlas {
+  background: linear-gradient(145deg, hsl(var(--brand)) 0%, hsl(var(--brand-dark)) 100%);
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.16), inset 0 0 0 1px rgba(255,255,255,.06);
+}
+.btn-primary-atlas::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  left: -110%;
+  width: 55%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.16), transparent);
+  transition: left 560ms cubic-bezier(.25,.46,.45,.94);
+}
+.btn-primary-atlas:hover {
+  background: linear-gradient(145deg, hsl(var(--brand-light)) 0%, hsl(var(--brand)) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 44px hsl(var(--brand) / 0.30), inset 0 1px 0 rgba(255,255,255,.20);
+}
+.btn-primary-atlas:hover::after { left: 160%; }
+
+/* Secondary — liquid glass (transparencia + blur + reflejo superior) */
+.btn-glass-atlas {
+  background: rgba(255,255,255,.05);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.12);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 4px 20px rgba(0,0,0,.20);
+}
+.btn-glass-atlas::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 50%;
+  background: linear-gradient(to bottom, rgba(255,255,255,.10), transparent);
+  pointer-events: none;
+}
+.btn-glass-atlas:hover {
+  background: rgba(255,255,255,.09);
+  transform: translateY(-2px);
+  border-color: hsl(var(--brand) / 0.35);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.20), 0 10px 30px rgba(0,0,0,.28);
+}
+
+/* Panel de cristal flotante (nav, controles, elementos flotantes) */
+.glass-panel {
+  background: rgba(255,255,255,.045);
+  border: 1px solid rgba(255,255,255,.10);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.10), 0 12px 40px rgba(0,0,0,.28);
+}
+
+/* Indicador de scroll del hero */
+.scroll-cue { animation: scrollCue 2.2s ease-in-out infinite; }
+@keyframes scrollCue {
+  0%, 100% { transform: translateY(0); opacity: .5; }
+  50% { transform: translateY(6px); opacity: 1; }
+}
+
+/* Flotación ambiental de capas (badges de producto) — da profundidad */
+.float-y { animation: floatY 6s ease-in-out infinite; }
+.float-y-2 { animation: floatY 7.5s ease-in-out infinite; animation-delay: -2.5s; }
+.float-y-3 { animation: floatY 8.5s ease-in-out infinite; animation-delay: -4.5s; }
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ═══════ ATLAS CARDS ═══════ */
+.card-atlas {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.07);
+  transition: border-color 360ms ease, transform 360ms cubic-bezier(.16,1,.30,1),
+              background 360ms ease, box-shadow 360ms ease;
+  will-change: transform;
+}
+.card-atlas:hover {
+  border-color: hsl(var(--brand) / 0.28);
+  transform: translateY(-4px);
+  background: rgba(255,255,255,.05);
+  box-shadow: 0 24px 60px rgba(0,0,0,.40), inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+/* ═══════ ATLAS TAGS / CHIPS ═══════ */
+.tag-atlas {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  background: hsl(var(--brand) / 0.10);
+  color: hsl(var(--brand-light));
+  border: 1px solid hsl(var(--brand) / 0.24);
+  backdrop-filter: blur(8px);
+}
+.chip-atlas {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  color: hsl(var(--muted-foreground));
+  transition: background 200ms ease, color 200ms ease, transform 200ms cubic-bezier(.16,1,.30,1);
+}
+.chip-atlas:hover {
+  background: hsl(var(--brand) / 0.12);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* Glow utility for accent dots / bars */
+.glow-brand { box-shadow: 0 0 14px hsl(var(--brand) / 0.6), 0 0 6px hsl(var(--brand) / 0.85); }
+
+.hairline {
+  background-image: linear-gradient(to right, hsl(var(--border)), hsl(var(--border)));
+}
+
+/* Subtle dark grid — translucent white lines */
+.grid-bg {
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.035) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+.dot-pulse {
+  animation: dotPulse 2.4s ease-in-out infinite;
+}
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .35; transform: scale(.8); }
+}
+
+.marquee-track {
+  animation: marquee 38s linear infinite;
+}
+@keyframes marquee {
+  from { transform: translate3d(0,0,0); }
+  to { transform: translate3d(-50%,0,0); }
+}
+
+.draw-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 1.6s ease-out forwards;
+}
+@keyframes draw { to { stroke-dashoffset: 0; } }
+
+:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * PROPUESTAS COMERCIALES ATLAS  ·  Sistema de tokens editables
+ *
+ * Cada página de propuesta se envuelve en `.proposal-root`. Los colores de la
+ * propuesta se definen aquí como tokens editables. POR DEFECTO heredan el
+ * indigo ATLAS — el color principal definitivo aún no está decidido.
+ *
+ * Para rebrandear una propuesta entera: cambia `--color-primary` (canales HSL
+ * "H S% L%") en UN solo lugar. Como las primitivas ATLAS (.btn-primary-atlas,
+ * .card-atlas, .tag-atlas, utilidades bg-brand…) se re-conectan aquí abajo a
+ * `--color-primary`, todo el sistema sigue el cambio automáticamente.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+.proposal-root {
+  /* ── Tokens editables (fuente única de la identidad de la propuesta) ── */
+  --color-primary: 242 83% 66%;        /* ← Define aquí el color Atlas definitivo */
+  --color-primary-hover: 242 100% 76%;
+  --color-primary-dark: 242 65% 56%;
+  --color-background: 240 36% 4%;
+  --color-surface: 240 37% 7%;
+  --color-surface-2: 240 30% 10%;
+  --color-text: 0 0% 100%;
+  --color-text-secondary: 240 8% 64%;
+  --color-border: 240 18% 15%;
+
+  /* Re-conecta las primitivas ATLAS al color editable de la propuesta, para
+     que un único cambio arriba rebrandee botones, cards, tags y utilidades. */
+  --brand: var(--color-primary);
+  --brand-light: var(--color-primary-hover);
+  --brand-dark: var(--color-primary-dark);
+  --ring: var(--color-primary);
+}
+
+/* Franja alterna para dar ritmo/contraste entre secciones. */
+.proposal-alt {
+  background:
+    linear-gradient(180deg, hsl(var(--color-primary) / 0.05), transparent 60%),
+    rgba(255, 255, 255, 0.018);
+  border-block: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Número grande "outline" (arquitectura / proceso) — editorial, discreto. */
+.num-ghost {
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1px hsl(var(--color-primary) / 0.55);
+  line-height: 0.9;
+}
+
+/* Línea vertical del timeline. */
+.timeline-rail {
+  background: linear-gradient(
+    to bottom,
+    hsl(var(--color-primary) / 0.5),
+    hsl(var(--color-primary) / 0.08)
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * VISTA CONCEPTUAL · Maqueta de alta fidelidad de la futura web de AJJ dentro
+ * de un browser frame. Viewport con scroll interno propio (altura controlada).
+ * overscroll-behavior:contain → nunca secuestra el scroll de la propuesta.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+.concept-frame {
+  box-shadow: 0 50px 130px rgba(0, 0, 0, 0.60), 0 12px 40px rgba(0, 0, 0, 0.42);
+}
+.mock-viewport {
+  /* Altura controlada en px (sin vh: evita colapsos y mantiene 700–850px en
+     desktop). El usuario recorre la maqueta dentro de este viewport. */
+  height: 800px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+  background: #050506;
+  -webkit-overflow-scrolling: touch;
+}
+.mock-viewport::-webkit-scrollbar { width: 8px; }
+.mock-viewport::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 100px;
+}
+.mock-viewport::-webkit-scrollbar-track { background: transparent; }
+
+/* Halo de marca muy controlado dentro del universo AJJ. */
+.mock-glow {
+  background: radial-gradient(120% 90% at 50% 0%, hsl(var(--color-primary) / 0.14), transparent 62%);
+}
+
+/* Reveal interno (root = viewport del mockup). */
+.mock-reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.mock-reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Hero conceptual: crossfade lento de 3 imágenes + zoom muy ligero (Ken Burns). */
+.mock-hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+.mock-hero-slide.is-active {
+  opacity: 1;
+}
+.mock-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.03);
+}
+.mock-hero-slide.is-active .mock-hero-img {
+  animation: mockKen 8s ease-out forwards;
+}
+@keyframes mockKen {
+  from { transform: scale(1.03); }
+  to { transform: scale(1.11); }
+}
+
+@media (max-width: 1024px) {
+  .mock-viewport { height: 700px; }
+}
+@media (max-width: 640px) {
+  .mock-viewport { height: 560px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mock-viewport { scroll-behavior: auto; }
+  .mock-reveal { opacity: 1; transform: none; transition: none; }
+  .mock-hero-slide { transition: none; }
+  .mock-hero-slide.is-active .mock-hero-img { animation: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track, .dot-pulse, .draw-line, .scroll-cue,
+  .float-y, .float-y-2, .float-y-3 { animation: none !important; }
+  html { scroll-behavior: auto; }
+}

@@ -1,0 +1,41 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  Endyxo · configuración de servidor para Hostinger (LiteSpeed/Apache)
+#  Sitio estático (Vite SPA + prerender). Este archivo se sube dentro de
+#  public_html junto al resto del build.
+# ─────────────────────────────────────────────────────────────────────────────
+
+RewriteEngine On
+
+# ── 1) Forzar HTTPS ──────────────────────────────────────────────────────────
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# ── 2) (Opcional) Canonicalizar www → sin www ────────────────────────────────
+#     Descomenta SOLO si tu dominio canónico es sin «www».
+# RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+# RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+# ── 3) SPA fallback: si la URL no es un archivo/carpeta real, servir index.html
+#     Evita errores 404 al entrar directo a rutas internas. No afecta a
+#     robots.txt, sitemap.xml ni a los assets (son archivos reales).
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ /index.html [L]
+
+# ── 4) Caché ─────────────────────────────────────────────────────────────────
+<IfModule mod_headers.c>
+  # Assets con hash en el nombre → inmutables, caché larga.
+  <FilesMatch "\.(js|css|woff2?|ttf|otf|svg|png|jpe?g|webp|avif|ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  # HTML siempre revalidado (para recibir despliegues nuevos al instante).
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# ── 5) Compresión ────────────────────────────────────────────────────────────
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml \
+    application/javascript application/json image/svg+xml
+</IfModule>

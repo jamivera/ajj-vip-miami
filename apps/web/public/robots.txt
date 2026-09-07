@@ -1,0 +1,16 @@
+# robots.txt · Endyxo
+# REEMPLAZAR el dominio del sitemap si el definitivo no es endyxo.com
+User-agent: *
+Allow: /
+
+# Motores generativos / IA (GEO) — permitidos explícitamente
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://endyxo.com/sitemap.xml

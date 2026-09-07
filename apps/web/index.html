@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<!-- ═══════════ Google Tag Manager ═══════════ -->
+		<!-- REEMPLAZAR: GTM-XXXXXXX por tu ID de contenedor real (ver REEMPLAZAR.md) -->
+		<script>
+			(function (w, d, s, l, i) {
+				w[l] = w[l] || [];
+				w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+				var f = d.getElementsByTagName(s)[0],
+					j = d.createElement(s),
+					dl = l != 'dataLayer' ? '&l=' + l : '';
+				j.async = true;
+				j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+				f.parentNode.insertBefore(j, f);
+			})(window, document, 'script', 'dataLayer', 'GTM-XXXXXXX');
+		</script>
+		<!-- ═══════════ End Google Tag Manager ═══════════ -->
+
+		<!-- ═══════════ SEO ═══════════ -->
+		<!-- REEMPLAZAR el dominio https://endyxo.com/ si el definitivo es otro -->
+		<title>Endyxo — Sistemas y software que conectan tu operación</title>
+		<meta
+			name="description"
+			content="Endyxo diseña y desarrolla productos, software y sistemas digitales que conectan procesos, información y equipos. AgencyOS es nuestro producto flagship para agencias."
+		/>
+		<meta name="robots" content="index, follow, max-image-preview:large" />
+		<meta name="author" content="Endyxo" />
+		<link rel="canonical" href="https://endyxo.com/" />
+		<meta name="theme-color" content="#07070F" />
+
+		<!-- Open Graph / redes -->
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Endyxo" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:title" content="Endyxo — Sistemas y software que conectan tu operación" />
+		<meta
+			property="og:description"
+			content="Productos, software y sistemas digitales que conectan procesos, información y equipos. Conoce AgencyOS, nuestro producto flagship."
+		/>
+		<meta property="og:url" content="https://endyxo.com/" />
+		<!-- REEMPLAZAR: imagen social 1200x630 real -->
+		<meta property="og:image" content="https://endyxo.com/og-image.jpg" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="Endyxo — Sistemas y software que conectan tu operación" />
+		<meta
+			name="twitter:description"
+			content="Productos, software y sistemas digitales que conectan procesos, información y equipos. Conoce AgencyOS."
+		/>
+		<meta name="twitter:image" content="https://endyxo.com/og-image.jpg" />
+
+		<!-- Favicon (placeholder ATLAS — REEMPLAZAR por el definitivo en /public/favicon.svg) -->
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+		<!-- Fuentes (fuera del CSS para no bloquear el render) -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+			rel="stylesheet"
+		/>
+
+		<!-- ═══════════ Datos estructurados (SEO + GEO) ═══════════ -->
+		<!-- Entidades y relaciones: Empresa → Sitio → Producto (AgencyOS).
+		     REEMPLAZAR dominio, redes (sameAs), email y teléfono con los reales. -->
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@graph": [
+					{
+						"@type": "Organization",
+						"@id": "https://endyxo.com/#organization",
+						"name": "Endyxo",
+						"url": "https://endyxo.com/",
+						"description": "Compañía de tecnología que diseña y desarrolla productos, software y sistemas digitales para simplificar y conectar la operación de las empresas.",
+						"email": "hola@endyxo.com",
+						"sameAs": [
+							"https://instagram.com/endyxo",
+							"https://facebook.com/endyxo",
+							"https://linkedin.com/company/endyxo",
+							"https://tiktok.com/@endyxo",
+							"https://x.com/endyxo"
+						]
+					},
+					{
+						"@type": "WebSite",
+						"@id": "https://endyxo.com/#website",
+						"url": "https://endyxo.com/",
+						"name": "Endyxo",
+						"inLanguage": "es",
+						"publisher": { "@id": "https://endyxo.com/#organization" }
+					},
+					{
+						"@type": "SoftwareApplication",
+						"@id": "https://endyxo.com/#agencyos",
+						"name": "AgencyOS",
+						"applicationCategory": "BusinessApplication",
+						"operatingSystem": "Web",
+						"description": "AgencyOS centraliza clientes, contenidos, aprobaciones, campañas y datos de una agencia dentro de un mismo sistema.",
+						"publisher": { "@id": "https://endyxo.com/#organization" },
+						"offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+					}
+				]
+			}
+		</script>
+	</head>
+	<body>
+		<!-- Google Tag Manager (noscript) — REEMPLAZAR GTM-XXXXXXX -->
+		<noscript
+			><iframe
+				src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+				height="0"
+				width="0"
+				style="display: none; visibility: hidden"
+			></iframe
+		></noscript>
+
+		<div id="root"></div>
+		<script type="module" src="/src/main.jsx"></script>
+	</body>
+</html>
