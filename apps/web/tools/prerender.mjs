@@ -14,8 +14,8 @@ import { pathToFileURL } from 'node:url';
 import path from 'node:path';
 
 const root = process.cwd(); // apps/web
-const clientHtmlPath = path.resolve(root, '../../dist/apps/web/index.html');
-const ssrEntryPath = path.resolve(root, '../../dist/.ssr/entry-server.js');
+const clientHtmlPath = path.resolve(root, 'dist/index.html');
+const ssrEntryPath = path.resolve(root, 'dist-ssr/entry-server.js');
 
 async function main() {
     if (!existsSync(clientHtmlPath)) {
