@@ -368,6 +368,10 @@ logger.error = (msg, options) => {
 }
 
 export default defineConfig({
+	// Base pública: por defecto '/' (Vercel/hosting en la raíz). Para GitHub
+	// Pages en un repo de proyecto se sirve bajo /<repo>/, así que el workflow
+	// de Pages define PAGES_BASE (p.ej. "/ajj-vip-miami/").
+	base: process.env.PAGES_BASE || '/',
 	optimizeDeps: {
 		include: allDeps,
 	},
